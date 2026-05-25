@@ -1,0 +1,742 @@
+<!doctype html>
+<html lang="hr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ticket Generator - Pro Version</title>
+    <!-- Vue 3 CDN for Reactive Functionality -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+      /* Exact Font and Color Variables */
+      @font-face {
+        font-family: "ProximaNova";
+        src: url("https://cdn.germaniasport.hr/public/fonts/ProximaNovaRegular.woff2")
+          format("woff2");
+        font-weight: normal;
+      }
+      @font-face {
+        font-family: "ProximaNova";
+        src: url("https://cdn.germaniasport.hr/public/fonts/ProximaNovaSemibold.woff2")
+          format("woff2");
+        font-weight: 600;
+      }
+      @font-face {
+        font-family: "ProximaNova";
+        src: url("https://cdn.germaniasport.hr/public/fonts/ProximaNovaBold.woff2")
+          format("woff2");
+        font-weight: bold;
+      }
+
+      :root {
+        --bg-app: #000000;
+        --bg-match: #1e2733;
+        --bg-bottom: #313540;
+        --text-main: #ffffff;
+        --text-secondary: #d6d6d6;
+        --accent-green: #6ebe45;
+        --icon-blue: #4a84f6;
+        --divider: #313540;
+        --border-info: #282e3a;
+        --border-porez: #4b4e57;
+        --btn-bg: #383c47;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "ProximaNova", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body,
+      html {
+        background-color: var(--bg-app);
+        color: var(--text-main);
+        width: 100%;
+        min-height: 100vh;
+      }
+
+      #app {
+        width: 100%;
+        min-height: 100vh;
+        background-color: var(--bg-app);
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Ticket Wrapper fills the screen */
+      .ticket-wrapper {
+        width: 100%;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Matches */
+      .match-list {
+        background-color: var(--bg-match);
+      }
+
+      .match-item {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--divider);
+        position: relative;
+      }
+
+      .match-top {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+      .ball-emoji {
+        font-size: 16px;
+      }
+
+      .match-teams {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        width: 80%;
+        line-height: 1.3;
+      }
+
+      .match-bottom {
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+      .match-bottom > div {
+        display: block; /* Pushes the second element down */
+      }
+
+      .match-right {
+        position: absolute;
+        top: 14px;
+        right: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 16px;
+      }
+
+      .match-icons {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .icon-copy {
+        width: 18px;
+        height: 18px;
+        stroke: var(--icon-blue);
+        cursor: pointer;
+      }
+
+      .status-toggle {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 14px;
+        user-select: none;
+      }
+      .status-0 {
+        background: #000;
+        color: #fff;
+      } /* Pending ? */
+      .status-1 {
+        background: #057d11;
+        color: #fff;
+      } /* Won Check */
+      .status-2 {
+        background: #f75d5d;
+        color: #fff;
+      } /* Lost X */
+
+      .match-odds {
+        font-size: 14px;
+      }
+
+      /* Bottom Section */
+      .bottom-section {
+        background-color: var(--bg-bottom);
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Totals Area */
+      .totals-area {
+        padding: 16px;
+      }
+
+      .total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        font-size: 14px;
+        color: var(--text-secondary);
+      }
+
+      .porez-row {
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--border-porez);
+        margin-bottom: 16px;
+      }
+
+      .total-row:last-child {
+        margin-bottom: 0;
+      }
+
+      .total-val {
+        color: var(--text-main);
+      }
+
+      .val-green {
+        color: var(--accent-green);
+        font-weight: bold;
+      }
+
+      .val-isplata {
+        font-size: 14px;
+        color: var(--accent-green);
+        font-weight: bold;
+      }
+
+      /* Footer Links inside ticket */
+      .ticket-footer {
+        padding: 0 16px 24px 16px;
+      }
+
+      .info-dropdown {
+        border-top: 1px solid var(--border-info);
+        border-bottom: 1px solid var(--border-info);
+        margin: 0 -16px;
+      }
+
+      .info-link {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        cursor: pointer;
+        padding: 16px;
+        color: var(--text-main);
+      }
+
+      .info-content {
+        padding: 0 16px 16px 16px;
+        font-size: 12px;
+        color: var(--text-secondary);
+        line-height: 1.5;
+      }
+
+      .action-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        margin-top: 24px;
+      }
+
+      .action-btn {
+        width: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        font-size: 12px;
+        cursor: pointer;
+        text-align: center;
+        line-height: 1.3;
+      }
+
+      .icon-bg {
+        background-color: var(--btn-bg);
+        border-radius: 6px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+
+      .action-btn svg {
+        width: 24px;
+        height: 24px;
+        fill: #fff;
+      }
+
+      /* Editable specific overrides */
+      [contenteditable="true"] {
+        outline: none;
+        border-bottom: 1px dashed transparent;
+        transition: border-color 0.2s;
+        min-width: 10px;
+        display: inline-block;
+      }
+      [contenteditable="true"]:focus {
+        border-bottom: 1px dashed var(--text-secondary);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      /* --- ADMIN MODAL UI --- */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.85);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+      .modal-content {
+        background-color: #1e2733;
+        width: 100%;
+        max-width: 400px;
+        border-radius: 12px;
+        padding: 20px;
+        max-height: 85vh;
+        overflow-y: auto;
+        border: 1px solid #313540;
+      }
+      .modal-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-align: center;
+        color: var(--accent-green);
+      }
+      .modal-matches-list {
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .modal-match-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #282e3a;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 12px;
+      }
+      .modal-btn {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .btn-add {
+        background: var(--accent-green);
+        color: #000;
+      }
+      .btn-delete-all {
+        background: #f75d5d;
+        color: #fff;
+      }
+      .btn-reset {
+        background: #4a84f6;
+        color: #fff;
+      }
+      .btn-close {
+        background: #383c47;
+        color: #fff;
+        margin-bottom: 0;
+      }
+      .delete-icon {
+        color: #f75d5d;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="ticket-wrapper">
+        <!-- Matches List -->
+        <div class="match-list">
+          <div
+            class="match-item"
+            v-for="(match, index) in matches"
+            :key="match.id"
+          >
+            <div class="match-top">
+              <span
+                contenteditable="true"
+                @blur="match.time = $event.target.innerText"
+                >{{ match.time }}</span
+              >
+              <span class="ball-emoji">⚽</span>
+            </div>
+
+            <div
+              class="match-teams"
+              contenteditable="true"
+              @blur="match.teams = $event.target.innerText"
+            >
+              {{ match.teams }}
+            </div>
+
+            <div class="match-bottom">
+              <div
+                contenteditable="true"
+                @blur="match.betType = $event.target.innerText"
+              >
+                {{ match.betType }}
+              </div>
+              <div
+                contenteditable="true"
+                @blur="match.category = $event.target.innerText"
+              >
+                {{ match.category }}
+              </div>
+            </div>
+
+            <div class="match-right">
+              <div class="match-icons">
+                <svg
+                  class="icon-copy"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path
+                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                  ></path>
+                </svg>
+
+                <!-- Editable Status Icon (Click to toggle) -->
+                <div
+                  class="status-toggle"
+                  :class="'status-' + match.status"
+                  @click="toggleStatus(match)"
+                >
+                  <span v-if="match.status === 0">?</span>
+                  <span v-if="match.status === 1">✓</span>
+                  <span v-if="match.status === 2">✗</span>
+                </div>
+              </div>
+              <!-- Editable Odds -->
+              <div
+                class="match-odds"
+                contenteditable="true"
+                @blur="updateOdds(match, $event)"
+                @keydown.enter.prevent="$event.target.blur()"
+              >
+                {{ match.odds.toFixed(2) }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Section -->
+        <div class="bottom-section">
+          <div class="totals-area">
+            <div class="total-row">
+              <span>Tečaj:</span>
+              <span class="total-val">{{ tecajFormatted }}</span>
+            </div>
+            <div class="total-row">
+              <span>Uplata:</span>
+              <span
+                class="total-val"
+                contenteditable="true"
+                @blur="updateVal('uplata', $event)"
+                @keydown.enter.prevent="$event.target.blur()"
+                >{{ formatCurrency(uplata) }}</span
+              >
+            </div>
+            <div class="total-row">
+              <span>MT:</span>
+              <span>
+                <span
+                  class="total-val"
+                  contenteditable="true"
+                  @blur="updateVal('manualMt', $event)"
+                  @keydown.enter.prevent="$event.target.blur()"
+                  >{{ formatCurrency(mtValue) }}</span
+                >
+                (5%)
+              </span>
+            </div>
+            <div class="total-row">
+              <span>Ulog:</span>
+              <span class="val-green">{{ formatCurrency(ulogValue) }}</span>
+            </div>
+            <div class="total-row">
+              <span>Dobitak:</span>
+              <span class="total-val">{{ formatCurrency(dobitakValue) }}</span>
+            </div>
+            <!-- Porez row with specific bottom border -->
+            <div class="total-row porez-row">
+              <span>Porez:</span>
+              <span
+                class="total-val"
+                contenteditable="true"
+                @blur="updateVal('manualTax', $event)"
+                @keydown.enter.prevent="$event.target.blur()"
+                >{{ formatCurrency(taxValue) }}</span
+              >
+            </div>
+            <div class="total-row">
+              <span>Isplata:</span>
+              <span class="val-isplata"
+                >{{ formatCurrency(isplataValue) }}</span
+              >
+            </div>
+          </div>
+
+          <!-- Footer Links -->
+          <div class="ticket-footer">
+            <!-- Real Dropdown -->
+            <div class="info-dropdown">
+              <div class="info-link" @click="infoOpen = !infoOpen">
+                <span>Informacije o listiću</span>
+                <span
+                  style="
+                    font-size: 14px;
+                    font-weight: normal;
+                    transition: transform 0.3s ease;
+                    display: inline-block;
+                  "
+                  :style="infoOpen ? 'transform: rotate(180deg)' : ''"
+                  >∨</span
+                >
+              </div>
+              <div class="info-content" v-show="infoOpen">
+                Status: <span style="color: var(--accent-green)">Dobitan</span
+                ><br />
+                Vrijeme uplate: danas 12:00<br />
+                Broj listića: 1234567890
+              </div>
+            </div>
+
+            <div class="action-buttons">
+              <!-- This button now opens the secret modal! -->
+              <div class="action-btn" @click="showAdminModal = true">
+                <div class="icon-bg">
+                  <svg
+                    style="
+                      fill: none;
+                      stroke: #fff;
+                      stroke-width: 2;
+                      stroke-linecap: round;
+                      stroke-linejoin: round;
+                    "
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M9 17v1.5c0 1.1.9 2 2 2h7c1.1 0 2-.9 2-2v-7c0-1.1-.9-2-2-2h-1.5"
+                    />
+                    <rect x="4" y="4" width="11" height="13" rx="2" ry="2" />
+                    <line x1="7" y1="9" x2="12" y2="9" />
+                    <line x1="7" y1="13" x2="12" y2="13" />
+                  </svg>
+                </div>
+                <span>Kreiraj isti<br />listić</span>
+              </div>
+              <div class="action-btn">
+                <div class="icon-bg">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"
+                    />
+                  </svg>
+                </div>
+                <span>Podijeli</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECRET ADMIN MODAL -->
+      <div
+        class="modal-overlay"
+        v-if="showAdminModal"
+        @click.self="showAdminModal = false"
+      >
+        <div class="modal-content">
+          <div class="modal-title">Upravljanje Listićem</div>
+
+          <div class="modal-matches-list">
+            <div
+              class="modal-match-item"
+              v-for="(match, index) in matches"
+              :key="match.id"
+            >
+              <span>{{ index + 1 }}. {{ match.teams }}</span>
+              <span class="delete-icon" @click="removeMatch(index)">X</span>
+            </div>
+            <div
+              v-if="matches.length === 0"
+              style="text-align: center; color: #999; font-size: 12px"
+            >
+              Nema parova na listiću
+            </div>
+          </div>
+
+          <button class="modal-btn btn-add" @click="addMatch">
+            + Dodaj novi par
+          </button>
+          <button class="modal-btn btn-delete-all" @click="removeAll">
+            Obriši sve parove
+          </button>
+          <button class="modal-btn btn-reset" @click="resetToDefault">
+            Vrati na original
+          </button>
+          <button class="modal-btn btn-close" @click="showAdminModal = false">
+            Zatvori Izbornik
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const { createApp } = Vue;
+
+      // Default template for easy resetting
+      const defaultMatches = [
+        {
+          id: 1,
+          time: "danas 13:45",
+          teams: "Sesvete - Bijelo Brdo",
+          betType: "Osnovna ponuda: 1",
+          category: "Nogomet / Hrvatska 2",
+          odds: 1.4,
+          status: 1, // Default Green Checkmark
+        },
+        {
+          id: 2,
+          time: "danas 19:00",
+          teams: "NK Karlovac - NK Jarun",
+          betType: "Osnovna ponuda: 1",
+          category: "Nogomet / Hrvatska 2",
+          odds: 2.05,
+          status: 1, // Default Green Checkmark
+        },
+      ];
+
+      createApp({
+        data() {
+          return {
+            matches: JSON.parse(JSON.stringify(defaultMatches)),
+            uplata: 2000.0,
+            manualMt: null,
+            manualTax: 457.96,
+            infoOpen: false,
+            showAdminModal: false,
+          };
+        },
+        computed: {
+          tecajValue() {
+            if (this.matches.length === 0) return 0;
+            return this.matches.reduce((acc, m) => acc * m.odds, 1);
+          },
+          tecajFormatted() {
+            return this.tecajValue.toFixed(2);
+          },
+          mtValue() {
+            if (this.manualMt !== null) return this.manualMt;
+            return this.uplata * 0.05;
+          },
+          ulogValue() {
+            return this.uplata - this.mtValue;
+          },
+          dobitakValue() {
+            return this.ulogValue * this.tecajValue;
+          },
+          taxValue() {
+            if (this.manualTax !== null) return this.manualTax;
+            let profit = this.dobitakValue - this.uplata;
+            return profit > 0 ? profit * 0.1326 : 0;
+          },
+          isplataValue() {
+            return this.dobitakValue - this.taxValue;
+          },
+        },
+        methods: {
+          toggleStatus(match) {
+            // Cycle through 1 (Won/Check), 2 (Lost/X), 0 (Pending/?)
+            match.status = (match.status + 1) % 3;
+          },
+          addMatch() {
+            this.matches.push({
+              id: Date.now(),
+              time: "danas 20:45",
+              teams: "Novi Par - Tim B",
+              betType: "Osnovna ponuda: 1",
+              category: "Nogomet",
+              odds: 1.5,
+              status: 1, // Defaults to Green Checkmark
+            });
+          },
+          removeMatch(index) {
+            this.matches.splice(index, 1);
+          },
+          removeAll() {
+            this.matches = [];
+          },
+          resetToDefault() {
+            this.matches = JSON.parse(JSON.stringify(defaultMatches));
+            this.uplata = 2000.0;
+            this.manualMt = null;
+            this.manualTax = 457.96;
+          },
+          updateOdds(match, event) {
+            let val = parseFloat(
+              event.target.innerText.replace(",", ".").replace(/ /g, ""),
+            );
+            if (!isNaN(val)) match.odds = val;
+            event.target.innerText = match.odds.toFixed(2);
+          },
+          updateVal(prop, event) {
+            let val = parseFloat(
+              event.target.innerText.replace(",", ".").replace(/ /g, ""),
+            );
+            if (!isNaN(val)) {
+              this[prop] = val;
+            } else if (prop === "manualMt" || prop === "manualTax") {
+              this[prop] = null;
+            }
+            event.target.innerText = this.formatCurrency(
+              this[
+                prop === "manualMt"
+                  ? "mtValue"
+                  : prop === "manualTax"
+                    ? "taxValue"
+                    : prop
+              ],
+            );
+          },
+          formatCurrency(num) {
+            let val = Number(num).toFixed(2);
+            let parts = val.split(".");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+            return parts.join(",") + " €";
+          },
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>
