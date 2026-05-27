@@ -42,8 +42,6 @@
         position: sticky;
         top: 0;
         z-index: 1000;
-        /* Drop-shadow dynamically wraps whatever is visible, meaning the shadow smoothly transitions! */
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
         /* Allow clicks to pass through the empty space when nav slides up */
         pointer-events: none;
       }
@@ -55,9 +53,6 @@
         align-items: center;
         height: 42px;
         padding: 0 4px 0 4px;
-        box-shadow:
-          inset 0 5px 5px -5px rgba(0, 0, 0, 0.4),
-          inset 0 -5px 5px -5px rgba(0, 0, 0, 0.4);
         /* NEW FOR SCROLL EFFECT: Solid bg, stay above bottom-nav, re-enable clicks */
         background-color: var(--bg-yellow);
         position: relative;
@@ -68,7 +63,6 @@
       @media screen and (max-width: 1179px) {
         .top-row {
           padding: 0 4px 0 4px;
-          box-shadow: unset;
           gap: 8px;
         }
       }
@@ -173,6 +167,20 @@
         position: relative;
         z-index: 10;
         pointer-events: auto;
+      }
+
+      /* New requested style for lower section */
+      @media screen and (max-width: 1179px) {
+        .bottom-nav {
+          padding: 0;
+          -webkit-transform: translateY(var(--move-y-up));
+          -moz-transform: translateY(var(--move-y-up));
+          -ms-transform: translateY(var(--move-y-up));
+          transform: translateY(var(--move-y-up));
+          box-shadow:
+            inset 0 5px 5px -5px rgba(0, 0, 0, 0.4),
+            inset 0 -5px 5px -5px rgba(0, 0, 0, 0.4);
+        }
       }
 
       .bottom-nav::-webkit-scrollbar {
@@ -300,7 +308,7 @@
 
           <a href="#" class="nav-item">
             <span class="svg full-size svg__casino-nav"></span>
-            <span>CASINO</span>
+            <span>Casino</span>
           </a>
 
           <a href="#" class="nav-item">
@@ -316,12 +324,37 @@
 
           <a href="#" class="nav-item">
             <span class="svg full-size svg__aviator-ico-nav"></span>
-            <span>AVIATOR</span>
+            <span>Aviator</span>
           </a>
 
           <a href="#" class="nav-item">
             <span class="svg full-size svg__lotto-nav"></span>
-            <span>LOTO</span>
+            <span>Loto</span>
+          </a>
+
+          <a href="#" class="nav-item">
+            <span class="svg full-size svg__lucky-g-nav"></span>
+            <span>Lucky</span>
+          </a>
+
+          <a href="#" class="nav-item">
+            <span class="svg full-size svg__kontra-nav"></span>
+            <span>Kontra</span>
+          </a>
+
+          <a href="#" class="nav-item">
+            <span class="svg full-size svg__virtuals-nav"></span>
+            <span>Virtuali</span>
+          </a>
+
+          <a href="#" class="nav-item">
+            <span class="svg full-size svg__brzze-nav"></span>
+            <span>Brze igre</span>
+          </a>
+
+          <a href="#" class="nav-item">
+            <span class="svg full-size svg__promo-ico-nav"></span>
+            <span>Promocije</span>
           </a>
         </ul>
       </nav>
