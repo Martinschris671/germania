@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Header Recreation</title>
+    <!-- Include FontAwesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* --- RESET & VARIABLES --- */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+      }
+
+      :root {
+        --bg-yellow: #fadd00;
+        --text-brown: #5c5300;
+        --accent-red: #e50014;
+        --btn-green: #008237;
+        --border-color: rgba(92, 83, 0, 0.15);
+      }
+
+      body {
+        background-color: #f4f4f4; /* Just for contrast in preview */
+      }
+
+      /* --- HEADER CONTAINER --- */
+      .site-header {
+        background-color: var(--bg-yellow);
+        width: 100%;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      /* --- TOP ROW --- */
+      .top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 55px;
+        padding: 0 12px;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      /* Left: Menu & Help */
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex: 1;
+      }
+
+      .hamburger {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        cursor: pointer;
+      }
+
+      .hamburger span {
+        display: block;
+        width: 20px;
+        height: 2px;
+        background-color: var(--accent-red);
+        border-radius: 2px;
+      }
+
+      .help-link {
+        color: var(--accent-red);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      /* Center: Logo */
+      .header-center {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+
+      .logo-wrapper {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        border-bottom: 3px solid var(--accent-red); /* The active red line */
+        padding: 0 10px;
+      }
+
+      .logo-wrapper img {
+        height: 28px;
+        width: auto;
+      }
+
+      /* Right: LOGGED IN STATE (Replaced Register/Login) */
+      .header-right {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 12px;
+        flex: 1;
+      }
+
+      .balance {
+        color: var(--text-brown);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .deposit-btn {
+        background-color: var(--btn-green);
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .profile-icon {
+        color: var(--text-brown);
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      /* --- BOTTOM ROW (Navigation) --- */
+      .bottom-nav {
+        width: 100%;
+        overflow-x: auto; /* Makes it scrollable on mobile */
+        scrollbar-width: none; /* Firefox */
+      }
+
+      .bottom-nav::-webkit-scrollbar {
+        display: none; /* Chrome/Safari */
+      }
+
+      .nav-list {
+        display: flex;
+        list-style: none;
+        padding: 5px 0 10px 0;
+        min-width: max-content; /* Allows items to flow off-screen */
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-width: 80px;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: var(--text-brown);
+        gap: 6px;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .nav-item i {
+        font-size: 24px;
+      }
+
+      .nav-item span {
+        font-size: 10px;
+        font-weight: 700;
+        text-align: center;
+        line-height: 1.1;
+        text-transform: uppercase;
+      }
+
+      /* Notification Dot for Germania Potraga */
+      .notification-dot {
+        position: absolute;
+        top: 5px;
+        right: 22px;
+        width: 10px;
+        height: 10px;
+        background-color: var(--accent-red);
+        border-radius: 50%;
+        border: 1px solid var(--bg-yellow);
+      }
+
+      /* Responsive Adjustments */
+      @media (max-width: 380px) {
+        .balance {
+          display: none;
+        } /* Hide balance on very small screens to save space */
+        .top-row {
+          padding: 0 8px;
+        }
+        .header-left,
+        .header-right {
+          gap: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <!-- TOP ROW -->
+      <div class="top-row">
+        <div class="header-left">
+          <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <a href="#" class="help-link">Pomoć?</a>
+        </div>
+
+        <div class="header-center">
+          <div class="logo-wrapper">
+            <img
+              src="https://cdn.germaniasport.hr/public/img2023/mobile_logo.svg"
+              alt="Germania Logo"
+            />
+          </div>
+        </div>
+
+        <!-- LOGGED IN UI (Instead of Login/Register) -->
+        <div class="header-right">
+          <span class="balance">145,50 €</span>
+          <button class="deposit-btn">Uplata</button>
+          <i class="fa-solid fa-circle-user profile-icon"></i>
+        </div>
+      </div>
+
+      <!-- BOTTOM ROW (Scrollable on mobile) -->
+      <nav class="bottom-nav">
+        <ul class="nav-list">
+          <a href="#" class="nav-item">
+            <i class="fa-regular fa-futbol"></i>
+            <span>KLAĐENJE</span>
+          </a>
+
+          <a href="#" class="nav-item">
+            <i class="fa-solid fa-satellite-dish"></i>
+            <span>UŽIVO</span>
+          </a>
+
+          <a href="#" class="nav-item">
+            <i class="fa-solid fa-lemon"></i>
+            <span>CASINO</span>
+          </a>
+
+          <a href="#" class="nav-item">
+            <i class="fa-solid fa-life-ring"></i>
+            <span>CASINO<br />UŽIVO</span>
+          </a>
+
+          <a href="#" class="nav-item">
+            <i class="fa-regular fa-circle-xmark"></i>
+            <span>GERMANIA<br />POTRAGA</span>
+            <div class="notification-dot"></div>
+          </a>
+
+          <a href="#" class="nav-item">
+            <i class="fa-solid fa-plane-up"></i>
+            <span>AVIATOR</span>
+          </a>
+
+          <a href="#" class="nav-item">
+            <i class="fa-solid fa-gem"></i>
+            <span>LOTO</span>
+          </a>
+        </ul>
+      </nav>
+    </header>
+  </body>
+</html>
