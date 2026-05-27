@@ -20,7 +20,7 @@
 
 :root {
   /* DARK THEME (DEFAULT) */
-  --bg-app: #000000;
+  --bg-app: #1e2733;
   --bg-match: #1e2733;
   --bg-bottom: #313540;
   --text-main: #ffffff;
@@ -37,7 +37,7 @@
 
 body.light-mode {
   /* LIGHT THEME */
-  --bg-app: #e2e5e9;
+  --bg-app: #ffffff;
   --bg-match: #ffffff;
   --bg-bottom: #ffffff;
   --text-main: #1a1c20;

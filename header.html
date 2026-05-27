@@ -1,29 +1,23 @@
 <!doctype html>
-<html lang="en">
+<html lang="hr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Header Recreation</title>
+    <title>germaniasport</title>
+    <!-- Vue 3 CDN for Reactive Functionality -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- === HEADER ASSETS & STYLES (Scoped so it doesn't break the app) === -->
     <link rel="stylesheet" href="icons.css" />
-    <!-- Include FontAwesome for icons -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <style>
-      /* --- RESET & VARIABLES --- */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-          Arial, sans-serif;
-      }
-
       :root {
         --base-common-text-color-rgb: 0, 0, 0;
-        --bg-yellow: #fadd00;
+        --bg-yellow: #fee000;
         --text-brown: #5c5300;
         --accent-red: #df1f26;
         --btn-green: #008237;
@@ -31,8 +25,15 @@
         --text-color: 1, 1, 1;
       }
 
-      body {
-        background-color: #f4f4f4; /* Just for contrast in preview */
+      /* Scoped reset specifically for the header to avoid changing your main app */
+      .site-header,
+      .site-header * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
       }
 
       /* --- HEADER CONTAINER --- */
@@ -92,7 +93,6 @@
         width: 15px;
         height: 2px;
         background-color: #df1f26;
-        border-radius: 4px;
         border-radius: 2px;
       }
 
@@ -115,7 +115,7 @@
         height: 100%;
         display: flex;
         align-items: center;
-        border-bottom: 2px solid var(--accent-red); /* The active red line */
+        border-bottom: 2px solid var(--accent-red);
         padding: 0 10px;
       }
 
@@ -124,7 +124,7 @@
         width: auto;
       }
 
-      /* Right: LOGGED IN STATE (Replaced Register/Login) */
+      /* Right: LOGGED IN STATE */
       .header-right {
         display: flex;
         align-items: center;
@@ -160,7 +160,7 @@
       .bottom-nav {
         height: 68px;
         width: 100%;
-        overflow-x: auto; /* Makes it scrollable on mobile */
+        overflow-x: auto;
         scrollbar-width: none; /* Firefox */
       }
 
@@ -171,8 +171,9 @@
       .nav-list {
         display: flex;
         list-style: none;
-        padding: 0 8px;
-        min-width: max-content; /* Allows items to flow off-screen */
+        padding: 0 12px;
+        min-width: max-content;
+        gap: 10px;
       }
 
       .nav-item {
@@ -189,7 +190,7 @@
       }
       .nav-item .svg {
         display: inline-block;
-        width: 26px; /* You can adjust this size */
+        width: 26px;
         height: 26px;
       }
       .profile-icon {
@@ -198,7 +199,7 @@
         justify-content: center;
         width: 24px;
         height: 24px;
-        margin-left: 10px; /* Optional: adds a little space between the button and icon */
+        margin-left: 10px;
       }
       .nav-item span {
         height: 32px;
@@ -229,7 +230,7 @@
       @media (max-width: 380px) {
         .balance {
           display: none;
-        } /* Hide balance on very small screens to save space */
+        }
         .top-row {
           padding: 0 8px;
         }
@@ -241,6 +242,7 @@
     </style>
   </head>
   <body>
+    <!-- === INSERTED HEADER === -->
     <header class="site-header">
       <!-- TOP ROW -->
       <div class="top-row">
@@ -251,7 +253,6 @@
             <span></span>
           </div>
           <a href="#" class="help-link">
-            <!-- Optional: Added the help icon from your CSS -->
             <i class="svg svg__help"></i> Pomoć?
           </a>
         </div>
@@ -269,7 +270,6 @@
         <div class="header-right">
           <span class="balance">145,50 €</span>
           <button class="deposit-btn">Uplata</button>
-          <!-- Replaced fa-circle-user with your user SVG -->
           <i class="svg svg__user-outlined profile-icon"></i>
         </div>
       </div>
@@ -298,7 +298,6 @@
           </a>
 
           <a href="#" class="nav-item">
-            <!-- Included the Red Notification Dot -->
             <span class="svg full-size svg__quest-nav"></span>
             <span>GERMANIA<br />POTRAGA</span>
             <div class="notification-dot"></div>
@@ -316,5 +315,287 @@
         </ul>
       </nav>
     </header>
+
+    <!-- === EXISTING APP CONTENT (Completely Untouched) === -->
+    <div id="app">
+      <div class="ticket-wrapper">
+        <!-- Matches List -->
+        <div class="match-list">
+          <div
+            class="match-item"
+            v-for="(match, index) in matches"
+            :key="match.id"
+          >
+            <div class="match-top">
+              <span
+                contenteditable="true"
+                @blur="match.time = $event.target.innerText"
+              >
+                {{ match.time }}
+              </span>
+              <span class="ball-emoji">⚽</span>
+            </div>
+
+            <div
+              class="match-teams"
+              contenteditable="true"
+              @blur="match.teams = $event.target.innerText"
+            >
+              {{ match.teams }}
+            </div>
+
+            <div class="match-bottom">
+              <div
+                contenteditable="true"
+                @blur="match.betType = $event.target.innerText"
+              >
+                {{ match.betType }}
+              </div>
+              <div
+                contenteditable="true"
+                @blur="match.category = $event.target.innerText"
+              >
+                {{ match.category }}
+              </div>
+            </div>
+
+            <div class="match-right">
+              <div class="match-icons">
+                <svg
+                  class="icon-copy"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path
+                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                  ></path>
+                </svg>
+
+                <!-- Editable Status Icon (Click to toggle) -->
+                <div
+                  class="status-toggle"
+                  :class="'status-' + match.status"
+                  @click="toggleStatus(match)"
+                >
+                  <span v-if="match.status === 0">?</span>
+                  <span v-if="match.status === 1">✓</span>
+                  <span v-if="match.status === 2">✗</span>
+                </div>
+              </div>
+              <!-- Editable Odds -->
+              <div
+                class="match-odds"
+                contenteditable="true"
+                @blur="updateOdds(match, $event)"
+                @keydown.enter.prevent="$event.target.blur()"
+              >
+                {{ match.odds.toFixed(2) }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Section -->
+        <div class="bottom-section">
+          <div class="totals-area">
+            <div class="total-row">
+              <span>Tečaj:</span>
+              <span class="total-val">{{ tecajFormatted }}</span>
+            </div>
+            <div class="total-row">
+              <span>Uplata:</span>
+              <span
+                class="total-val"
+                contenteditable="true"
+                @blur="updateVal('uplata', $event)"
+                @keydown.enter.prevent="$event.target.blur()"
+              >
+                {{ formatCurrency(uplata) }}
+              </span>
+            </div>
+            <div class="total-row">
+              <span>MT:</span>
+              <span>
+                <span
+                  class="total-val"
+                  contenteditable="true"
+                  @blur="updateVal('manualMt', $event)"
+                  @keydown.enter.prevent="$event.target.blur()"
+                >
+                  {{ formatCurrency(mtValue) }}
+                </span>
+                (5%)
+              </span>
+            </div>
+            <div class="total-row">
+              <span>Ulog:</span>
+              <span class="val-green">{{ formatCurrency(ulogValue) }}</span>
+            </div>
+            <div class="total-row">
+              <span>Dobitak:</span>
+              <span class="total-val">{{ formatCurrency(dobitakValue) }}</span>
+            </div>
+            <!-- Porez row with specific bottom border -->
+            <div class="total-row porez-row">
+              <span>Porez:</span>
+              <span
+                class="total-val"
+                contenteditable="true"
+                @blur="updateVal('manualTax', $event)"
+                @keydown.enter.prevent="$event.target.blur()"
+              >
+                {{ formatCurrency(taxValue) }}
+              </span>
+            </div>
+            <div class="total-row">
+              <span>Isplata:</span>
+              <span class="val-isplata"
+                >{{ formatCurrency(isplataValue) }}</span
+              >
+            </div>
+          </div>
+
+          <!-- Footer Links -->
+          <div class="ticket-footer">
+            <!-- Real Dropdown -->
+            <div class="info-dropdown">
+              <div class="info-link" @click="infoOpen = !infoOpen">
+                <span>Informacije o listiću</span>
+                <span
+                  style="
+                    width: 20px;
+                    height: 20px;
+                    transition: transform 0.3s ease;
+                    display: inline-block;
+                  "
+                  :style="infoOpen ? 'transform: rotate(180deg)' : ''"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M4.29289 8.29289C4.68342 7.90237 5.31658 7.90237 5.70711 8.29289L12 14.5858L18.2929 8.29289C18.6834 7.90237 19.3166 7.90237 19.7071 8.29289C20.0976 8.68342 20.0976 9.31658 19.7071 9.70711L12.7071 16.7071C12.3166 17.0976 11.6834 17.0976 11.2929 16.7071L4.29289 9.70711C3.90237 9.31658 3.90237 8.68342 4.29289 8.29289Z"
+                        fill="currentColor"
+                      ></path>
+                    </g>
+                  </svg>
+                </span>
+              </div>
+              <div class="info-content" v-show="infoOpen">
+                Status: <span style="color: var(--accent-green)">Dobitan</span
+                ><br />
+                Vrijeme uplate: danas 12:00<br />
+                Broj listića: 1234567890
+              </div>
+            </div>
+
+            <div class="action-buttons">
+              <!-- This button now opens the secret modal! -->
+              <div class="action-btn" @click="showAdminModal = true">
+                <div class="icon-bg">
+                  <svg
+                    style="
+                      fill: none;
+                      stroke: currentColor;
+                      stroke-width: 2;
+                      stroke-linecap: round;
+                      stroke-linejoin: round;
+                    "
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M9 17v1.5c0 1.1.9 2 2 2h7c1.1 0 2-.9 2-2v-7c0-1.1-.9-2-2-2h-1.5"
+                    />
+                    <rect x="4" y="4" width="11" height="13" rx="2" ry="2" />
+                    <line x1="7" y1="9" x2="12" y2="9" />
+                    <line x1="7" y1="13" x2="12" y2="13" />
+                  </svg>
+                </div>
+                <span>Kreiraj isti<br />listić</span>
+              </div>
+              <div class="action-btn">
+                <div class="icon-bg">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"
+                    />
+                  </svg>
+                </div>
+                <span>Podijeli</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECRET ADMIN MODAL -->
+      <div
+        class="modal-overlay"
+        v-if="showAdminModal"
+        @click.self="showAdminModal = false"
+      >
+        <div class="modal-content">
+          <div class="modal-title">Upravljanje Listićem</div>
+
+          <div class="modal-matches-list">
+            <div
+              class="modal-match-item"
+              v-for="(match, index) in matches"
+              :key="match.id"
+            >
+              <span>{{ index + 1 }}. {{ match.teams }}</span>
+              <span class="delete-icon" @click="removeMatch(index)">X</span>
+            </div>
+            <div
+              v-if="matches.length === 0"
+              style="text-align: center; color: #999; font-size: 12px"
+            >
+              Nema parova na listiću
+            </div>
+          </div>
+
+          <button class="modal-btn btn-add" @click="addMatch">
+            + Dodaj novi par
+          </button>
+          <button class="modal-btn btn-delete-all" @click="removeAll">
+            Obriši sve parove
+          </button>
+          <button class="modal-btn btn-reset" @click="resetToDefault">
+            Vrati na original
+          </button>
+
+          <!-- NOVI GUMB ZA SVJETLU TEMU -->
+          <button
+            class="modal-btn btn-theme"
+            @click="isLightMode = !isLightMode"
+          >
+            <span v-if="!isLightMode">☀️ Prebaci na Svijetlu temu</span>
+            <span v-else>🌙 Prebaci na Tamnu temu</span>
+          </button>
+
+          <button class="modal-btn btn-close" @click="showAdminModal = false">
+            Zatvori Izbornik
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
   </body>
 </html>
