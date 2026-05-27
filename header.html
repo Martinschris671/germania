@@ -28,7 +28,7 @@
         --accent-red: #df1f26;
         --btn-green: #008237;
         --border-color: rgba(92, 83, 0, 0.15);
-        --text-color: #1e2733;
+        --text-color: 1, 1, 1;
       }
 
       body {
@@ -51,10 +51,20 @@
         justify-content: space-between;
         align-items: center;
         height: 42px;
-        gap: 8px;
-        padding: 0 4px 0 4px;
-        box-shadow: unset;
+        gap: 0 8px;
+        padding: 0 16px;
+        box-shadow:
+          inset 0 5px 5px -5px rgba(0, 0, 0, 0.4),
+          inset 0 -5px 5px -5px rgba(0, 0, 0, 0.4);
         border-bottom: 1px solid var(--border-color);
+      }
+
+      @media screen and (max-width: 1179px) {
+        .top-row {
+          padding: 0 4px 0 4px;
+          box-shadow: unset;
+          gap: 8px;
+        }
       }
 
       /* Left: Menu & Help */
@@ -89,8 +99,7 @@
       .help-link {
         color: var(--accent-red);
         text-decoration: none;
-        font-size: 14px;
-        font-weight: 500;
+        font-size: 13px;
       }
 
       /* Center: Logo */
@@ -106,7 +115,7 @@
         height: 100%;
         display: flex;
         align-items: center;
-        border-bottom: 3px solid var(--accent-red); /* The active red line */
+        border-bottom: 2px solid var(--accent-red); /* The active red line */
         padding: 0 10px;
       }
 
@@ -149,6 +158,7 @@
 
       /* --- BOTTOM ROW (Navigation) --- */
       .bottom-nav {
+        height: 68px;
         width: 100%;
         overflow-x: auto; /* Makes it scrollable on mobile */
         scrollbar-width: none; /* Firefox */
@@ -161,7 +171,7 @@
       .nav-list {
         display: flex;
         list-style: none;
-        padding: 5px 0 10px 0;
+        padding: 0 8px;
         min-width: max-content; /* Allows items to flow off-screen */
       }
 
@@ -170,19 +180,17 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-width: 80px;
-        padding: 5px 10px;
+        padding: 10px 0px 0px 0px;
         text-decoration: none;
         color: var(--text-brown);
-        gap: 6px;
         cursor: pointer;
         position: relative;
+        min-width: 54px;
       }
       .nav-item .svg {
         display: inline-block;
-        width: 28px; /* You can adjust this size */
-        height: 28px;
-        margin-bottom: 5px; /* Adds a little space between icon and text */
+        width: 26px; /* You can adjust this size */
+        height: 26px;
       }
       .profile-icon {
         display: inline-flex;
@@ -193,11 +201,16 @@
         margin-left: 10px; /* Optional: adds a little space between the button and icon */
       }
       .nav-item span {
-        font-size: 10px;
-        font-weight: 700;
-        text-align: center;
-        line-height: 1.1;
+        height: 32px;
+        font-size: 11px;
+        line-height: 11px;
+        white-space: normal;
         text-transform: uppercase;
+        text-align: center;
+        color: var(--text-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       /* Notification Dot for Germania Potraga */
