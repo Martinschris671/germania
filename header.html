@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Header Recreation</title>
+    <link rel="stylesheet" href="icons.css" />
     <!-- Include FontAwesome for icons -->
     <link
       rel="stylesheet"
@@ -21,11 +22,13 @@
       }
 
       :root {
+        --base-common-text-color-rgb: 0, 0, 0;
         --bg-yellow: #fadd00;
         --text-brown: #5c5300;
-        --accent-red: #e50014;
+        --accent-red: #df1f26;
         --btn-green: #008237;
         --border-color: rgba(92, 83, 0, 0.15);
+        --text-color: #1e2733;
       }
 
       body {
@@ -47,8 +50,10 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 55px;
-        padding: 0 12px;
+        height: 42px;
+        gap: 8px;
+        padding: 0 4px 0 4px;
+        box-shadow: unset;
         border-bottom: 1px solid var(--border-color);
       }
 
@@ -63,15 +68,21 @@
       .hamburger {
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 40px;
         cursor: pointer;
+        margin-right: 8px;
+        gap: 2px;
       }
 
       .hamburger span {
         display: block;
-        width: 20px;
+        width: 15px;
         height: 2px;
-        background-color: var(--accent-red);
+        background-color: #df1f26;
+        border-radius: 4px;
         border-radius: 2px;
       }
 
@@ -167,11 +178,20 @@
         cursor: pointer;
         position: relative;
       }
-
-      .nav-item i {
-        font-size: 24px;
+      .nav-item .svg {
+        display: inline-block;
+        width: 28px; /* You can adjust this size */
+        height: 28px;
+        margin-bottom: 5px; /* Adds a little space between icon and text */
       }
-
+      .profile-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        margin-left: 10px; /* Optional: adds a little space between the button and icon */
+      }
       .nav-item span {
         font-size: 10px;
         font-weight: 700;
@@ -217,7 +237,10 @@
             <span></span>
             <span></span>
           </div>
-          <a href="#" class="help-link">Pomoć?</a>
+          <a href="#" class="help-link">
+            <!-- Optional: Added the help icon from your CSS -->
+            <i class="svg svg__help"></i> Pomoć?
+          </a>
         </div>
 
         <div class="header-center">
@@ -229,50 +252,52 @@
           </div>
         </div>
 
-        <!-- LOGGED IN UI (Instead of Login/Register) -->
+        <!-- LOGGED IN UI -->
         <div class="header-right">
           <span class="balance">145,50 €</span>
           <button class="deposit-btn">Uplata</button>
-          <i class="fa-solid fa-circle-user profile-icon"></i>
+          <!-- Replaced fa-circle-user with your user SVG -->
+          <i class="svg svg__user-outlined profile-icon"></i>
         </div>
       </div>
 
-      <!-- BOTTOM ROW (Scrollable on mobile) -->
+      <!-- BOTTOM ROW -->
       <nav class="bottom-nav">
         <ul class="nav-list">
           <a href="#" class="nav-item">
-            <i class="fa-regular fa-futbol"></i>
+            <span class="svg full-size svg__betting-nav"></span>
             <span>KLAĐENJE</span>
           </a>
 
           <a href="#" class="nav-item">
-            <i class="fa-solid fa-satellite-dish"></i>
+            <span class="svg full-size svg__live-nav"></span>
             <span>UŽIVO</span>
           </a>
 
           <a href="#" class="nav-item">
-            <i class="fa-solid fa-lemon"></i>
+            <span class="svg full-size svg__casino-nav"></span>
             <span>CASINO</span>
           </a>
 
           <a href="#" class="nav-item">
-            <i class="fa-solid fa-life-ring"></i>
+            <span class="svg full-size svg__live-casino-nav"></span>
             <span>CASINO<br />UŽIVO</span>
           </a>
 
           <a href="#" class="nav-item">
-            <i class="fa-regular fa-circle-xmark"></i>
+            <!-- Included the Red Notification Dot -->
+            <span class="svg full-size svg__quest-nav"></span>
             <span>GERMANIA<br />POTRAGA</span>
             <div class="notification-dot"></div>
           </a>
 
           <a href="#" class="nav-item">
-            <i class="fa-solid fa-plane-up"></i>
+            <span class="svg full-size svg__aviator-ico-nav"></span>
             <span>AVIATOR</span>
           </a>
 
           <a href="#" class="nav-item">
-            <i class="fa-solid fa-gem"></i>
+            <span class="svg full-size svg__lotto-nav"></span>
             <span>LOTO</span>
           </a>
         </ul>
