@@ -24,6 +24,11 @@ const defaultMatches = [
 
 createApp({
   data() {
+    // 1. Check local storage for saved theme preference
+    const savedTheme = localStorage.getItem("isLightMode");
+    const initialLightMode =
+      savedTheme !== null ? JSON.parse(savedTheme) : false;
+
     return {
       matches: JSON.parse(JSON.stringify(defaultMatches)),
       uplata: 2000.0,
@@ -31,17 +36,23 @@ createApp({
       manualTax: null,
       infoOpen: false,
       showAdminModal: false,
-      isLightMode: false, // New Light Mode State
+      isLightMode: initialLightMode, // 2. Set state based on local storage
     };
   },
   watch: {
-    // Automatically toggles the CSS class on the body when button is clicked
-    isLightMode(newVal) {
-      if (newVal) {
-        document.body.classList.add("light-mode");
-      } else {
-        document.body.classList.remove("light-mode");
-      }
+    // Automatically toggles the CSS class and saves to localStorage
+    isLightMode: {
+      handler(newVal) {
+        // 3. Save the new value to localStorage whenever it changes
+        localStorage.setItem("isLightMode", JSON.stringify(newVal));
+
+        if (newVal) {
+          document.body.classList.add("light-mode");
+        } else {
+          document.body.classList.remove("light-mode");
+        }
+      },
+      immediate: true, // 4. Run this handler immediately on page load to apply the saved class!
     },
   },
   computed: {

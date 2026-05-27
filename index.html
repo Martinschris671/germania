@@ -661,15 +661,32 @@
         // Monitor scrolling to fire the animation
         ScrollTrigger.create({
           trigger: document.body,
-          start: "top top-=30", // Wait until scrolled 30px down to trigger for better feel
+          start: "top top-=30",
           onUpdate: (self) => {
-            if (self.direction === 1) {
-              // Scrolling down -> Play animation to hide bottom section
-              actionNav.play();
-            } else if (self.direction === -1) {
-              // Scrolling up -> Reverse animation to show bottom section smoothly
+            // Get the user's scroll speed (pixels per second)
+            const scrollSpeed = Math.abs(self.getVelocity());
+
+            // --- THRESHOLD FOR "FAST" vs "SLOW" SCROLL ---
+            // Increase this number if you want the user to scroll even faster to trigger the hide effect.
+            // Decrease this number if you want it to trigger easier.
+            // 150 is the "perfect little bit fast" spot.
+            const speedThreshold = 150;
+
+            // If the user scrolls all the way to the top, always show the menu
+            if (self.scroll() <= 30) {
               actionNav.reverse();
             }
+            // If the user is scrolling faster than the threshold ("not small small")
+            else if (scrollSpeed > speedThreshold) {
+              if (self.direction === 1) {
+                // Scrolling down faster -> Hide
+                actionNav.play();
+              } else if (self.direction === -1) {
+                // Scrolling up faster -> Show
+                actionNav.reverse();
+              }
+            }
+            // If they are scrolling slow (speed < 150), we do nothing and keep it exactly as it is!
           },
         });
       });
