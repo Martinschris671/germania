@@ -29,6 +29,11 @@ createApp({
     const initialLightMode =
       savedTheme !== null ? JSON.parse(savedTheme) : false;
 
+    // === NEW: Check Local Storage for Custom Balance ===
+    const savedBalance = localStorage.getItem("headerBalance");
+    const initialBalance =
+      savedBalance !== null ? parseFloat(savedBalance) : 145.5;
+
     return {
       matches: JSON.parse(JSON.stringify(defaultMatches)),
       uplata: 2000.0,
@@ -36,14 +41,14 @@ createApp({
       manualTax: null,
       infoOpen: false,
       showAdminModal: false,
-      isLightMode: initialLightMode, // 2. Set state based on local storage
+      isLightMode: initialLightMode,
+      headerBalance: initialBalance, // Store the custom balance
     };
   },
   watch: {
     // Automatically toggles the CSS class and saves to localStorage
     isLightMode: {
       handler(newVal) {
-        // 3. Save the new value to localStorage whenever it changes
         localStorage.setItem("isLightMode", JSON.stringify(newVal));
 
         if (newVal) {
@@ -52,7 +57,7 @@ createApp({
           document.body.classList.remove("light-mode");
         }
       },
-      immediate: true, // 4. Run this handler immediately on page load to apply the saved class!
+      immediate: true,
     },
   },
   computed: {
@@ -83,6 +88,26 @@ createApp({
     },
   },
   methods: {
+    // === NEW: Update & Save Balance Method ===
+    updateBalance(event) {
+      // Clean up the text input (removes the euro symbol, spaces, and turns commas into decimals)
+      let val = parseFloat(
+        event.target.innerText
+          .replace(/€/g, "")
+          .replace(",", ".")
+          .replace(/ /g, ""),
+      );
+
+      // If it's a valid number, save it!
+      if (!isNaN(val)) {
+        this.headerBalance = val;
+        localStorage.setItem("headerBalance", val);
+      }
+
+      // Reformat the text element so it always looks clean (e.g. 145,50 €)
+      event.target.innerText = this.formatCurrency(this.headerBalance);
+    },
+
     toggleStatus(match) {
       match.status = (match.status + 1) % 3;
     },
@@ -108,6 +133,7 @@ createApp({
       this.uplata = 2000.0;
       this.manualMt = null;
       this.manualTax = null;
+      // Note: We deliberately do NOT reset the custom balance here so it stays persistent
     },
     updateOdds(match, event) {
       let val = parseFloat(
@@ -118,7 +144,10 @@ createApp({
     },
     updateVal(prop, event) {
       let val = parseFloat(
-        event.target.innerText.replace(",", ".").replace(/ /g, ""),
+        event.target.innerText
+          .replace(",", ".")
+          .replace(/ /g, "")
+          .replace(/€/g, ""),
       );
       if (!isNaN(val)) {
         this[prop] = val;
