@@ -14,18 +14,212 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+
+    <!-- === CHROME HEADER STYLES === -->
     <style>
       :root {
+        /* Chrome Theme Variables */
+        --bg-color: #1e1f22;
+        --url-bg: #3c4043;
+        --icon-color: #e8eaed;
+        --text-color: #ffffff;
+        --dropdown-bg: #292a2d;
+        --dropdown-hover: #3c4043;
+
+        /* App Theme Variables */
         --base-common-text-color-rgb: 0, 0, 0;
         --bg-yellow: #fee000;
         --text-brown: #5c5300;
         --accent-red: #df1f26;
         --btn-green: #008237;
         --border-color: rgba(92, 83, 0, 0.15);
-        --text-color: 1, 1, 1;
+        --text-app-color: 1, 1, 1;
       }
 
-      /* Scoped reset specifically for the header to avoid changing your main app */
+      [data-theme="light"] {
+        --bg-color: #ffffff;
+        --url-bg: #f1f3f4;
+        --icon-color: #5f6368;
+        --text-color: #202124;
+        --dropdown-bg: #ffffff;
+        --dropdown-hover: #f1f3f4;
+      }
+
+      body {
+        padding-top: 56px; /* Offset for the fixed Chrome header */
+      }
+
+      /* Chrome Header Container (Fixed) */
+      .chrome-header {
+        display: flex;
+        align-items: center;
+        background-color: var(--bg-color);
+        padding: 8px;
+        height: 56px;
+        gap: 8px;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 2000;
+        transition: background-color 0.3s ease;
+        box-sizing: border-box;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Roboto", "Segoe UI", Arial,
+          sans-serif;
+      }
+
+      /* Buttons & SVG Styling */
+      .chrome-header .icon-btn {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px;
+        color: var(--icon-color);
+        flex-shrink: 0;
+        transition: color 0.3s ease;
+        border-radius: 50%;
+      }
+
+      .chrome-header .icon-btn svg {
+        width: 24px;
+        height: 24px;
+        fill: currentColor;
+      }
+
+      /* URL Bar */
+      .chrome-header .url-container {
+        flex: 1 1 0px;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        background-color: var(--url-bg);
+        border-radius: 999px;
+        height: 40px;
+        padding: 0 10px;
+        gap: 6px;
+        transition: background-color 0.3s ease;
+      }
+
+      .chrome-header .url-icon {
+        padding: 0;
+        flex-shrink: 0;
+      }
+
+      .chrome-header .url-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .chrome-header .url-input {
+        background: transparent;
+        border: none;
+        color: var(--text-color);
+        font-size: 16px;
+        width: 100%;
+        min-width: 0;
+        outline: none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* Tab Counter Square */
+      .chrome-header .tabs-container {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        border: 2px solid var(--icon-color);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: border-color 0.3s ease;
+        overflow: hidden;
+        margin: 0 2px;
+      }
+
+      .chrome-header .tab-input {
+        background: transparent;
+        border: none;
+        color: var(--icon-color);
+        font-size: 10px;
+        font-weight: 600;
+        text-align: center;
+        width: 100%;
+        height: 100%;
+        outline: none;
+        padding: 0;
+        transition: color 0.3s ease;
+      }
+
+      /* Dropdown Menu */
+      .chrome-header .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 60px;
+        right: 8px;
+        background-color: var(--dropdown-bg);
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        flex-direction: column;
+        overflow: hidden;
+        z-index: 100;
+        min-width: 200px;
+        max-width: 90vw;
+      }
+
+      .chrome-header .dropdown-menu.show {
+        display: flex;
+        animation: fadeIn 0.15s ease;
+      }
+
+      .chrome-header .dropdown-menu button {
+        padding: 14px 16px;
+        background: transparent;
+        border: none;
+        color: var(--text-color);
+        text-align: left;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .chrome-header .dropdown-menu button:hover {
+        background-color: var(--dropdown-hover);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 360px) {
+        .chrome-header {
+          padding: 8px 4px;
+          gap: 4px;
+        }
+        .chrome-header .url-container {
+          padding: 0 8px;
+        }
+        .chrome-header .icon-btn svg {
+          width: 22px;
+          height: 22px;
+        }
+      }
+    </style>
+
+    <style>
+      /* Scoped reset specifically for the app header */
       .site-header,
       .site-header * {
         margin: 0;
@@ -40,9 +234,8 @@
       .site-header {
         width: 100%;
         position: sticky;
-        top: 0;
+        top: 56px; /* ADAPTED: Now sticks perfectly underneath the fixed Chrome header */
         z-index: 1000;
-        /* Allow clicks to pass through the empty space when nav slides up */
         pointer-events: none;
       }
 
@@ -53,7 +246,6 @@
         align-items: center;
         height: 42px;
         padding: 0 4px 0 4px;
-        /* NEW FOR SCROLL EFFECT: Solid bg, stay above bottom-nav, re-enable clicks */
         background-color: var(--bg-yellow);
         position: relative;
         z-index: 20;
@@ -136,7 +328,6 @@
         color: var(--text-brown);
         font-size: 14px;
         font-weight: 700;
-        /* Added cursor style for editability */
         cursor: text;
         padding: 2px 4px;
         border-radius: 4px;
@@ -172,9 +363,7 @@
         height: 68px;
         width: 100%;
         overflow-x: auto;
-        scrollbar-width: none; /* Firefox */
-
-        /* NEW FOR SCROLL EFFECT: Solid bg, slide behind top-row, re-enable clicks */
+        scrollbar-width: none;
         background-color: var(--bg-yellow);
         position: relative;
         z-index: 10;
@@ -195,7 +384,7 @@
       }
 
       .bottom-nav::-webkit-scrollbar {
-        display: none; /* Chrome/Safari */
+        display: none;
       }
 
       .nav-list {
@@ -238,13 +427,12 @@
         white-space: normal;
         text-transform: uppercase;
         text-align: center;
-        color: var(--text-color);
+        color: var(--text-app-color);
         display: flex;
         align-items: center;
         justify-content: center;
       }
 
-      /* Notification Dot for Germania Potraga */
       .notification-dot {
         position: absolute;
         top: 5px;
@@ -256,7 +444,6 @@
         border: 1px solid var(--bg-yellow);
       }
 
-      /* Responsive Adjustments */
       @media (max-width: 380px) {
         .balance {
           display: none;
@@ -272,9 +459,79 @@
     </style>
   </head>
   <body>
+    <!-- === NEW FIXED CHROME HEADER === -->
+    <header class="chrome-header">
+      <!-- Home Icon -->
+      <button class="icon-btn" aria-label="Home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+          <path
+            d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"
+          />
+        </svg>
+      </button>
+
+      <!-- URL Input Area -->
+      <div class="url-container">
+        <div class="icon-btn url-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+            <path
+              d="M603.5-193.5Q560-237 560-300t43.5-106.5Q647-450 710-450t106.5 43.5Q860-363 860-300t-43.5 106.5Q773-150 710-150t-106.5-43.5Zm156-57Q780-271 780-300t-20.5-49.5Q739-370 710-370t-49.5 20.5Q640-329 640-300t20.5 49.5Q681-230 710-230t49.5-20.5ZM160-260v-80h320v80H160Zm-16.5-293.5Q100-597 100-660t43.5-106.5Q187-810 250-810t106.5 43.5Q400-723 400-660t-43.5 106.5Q313-510 250-510t-106.5-43.5Zm156-57Q320-631 320-660t-20.5-49.5Q279-730 250-730t-49.5 20.5Q180-689 180-660t20.5 49.5Q221-590 250-590t49.5-20.5ZM480-620v-80h320v80H480Zm230 320ZM250-660Z"
+            />
+          </svg>
+        </div>
+        <input
+          type="text"
+          class="url-input"
+          id="urlInput"
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </div>
+
+      <!-- Plus Icon (Using your provided SVG, inheriting color for themes) -->
+      <button class="icon-btn" aria-label="New Tab">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="currentColor"
+        >
+          <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+        </svg>
+      </button>
+
+      <!-- Tabs Icon -->
+      <div class="tabs-container" aria-label="Open Tabs">
+        <input
+          type="text"
+          class="tab-input"
+          id="tabInput"
+          maxlength="3"
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </div>
+
+      <!-- Menu Dropdown -->
+      <button class="icon-btn" id="menuBtn" aria-label="More Options">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+          <path
+            d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"
+          />
+        </svg>
+      </button>
+
+      <div class="dropdown-menu" id="dropdownMenu">
+        <button id="themeToggleBtn">Switch to Light Mode</button>
+        <button id="revertBtn">Revert to Original</button>
+      </div>
+    </header>
+    <!-- === END CHROME HEADER === -->
+
     <!-- IMPORTANT: <div id="app"> now WRAPS the header as well so Vue can edit the balance! -->
     <div id="app">
-      <!-- === INSERTED HEADER === -->
+      <!-- === INSERTED APP HEADER === -->
       <header class="site-header">
         <!-- TOP ROW -->
         <div class="top-row">
@@ -663,6 +920,80 @@
 
     <script src="script.js"></script>
 
+    <!-- === Chrome Header Script Logic === -->
+    <script>
+      (function () {
+        const DEFAULT_URL = "germaniasport.hr/hr";
+        const DEFAULT_TABS = "54";
+
+        const urlInput = document.getElementById("urlInput");
+        const tabInput = document.getElementById("tabInput");
+        const menuBtn = document.getElementById("menuBtn");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        const themeToggleBtn = document.getElementById("themeToggleBtn");
+        const revertBtn = document.getElementById("revertBtn");
+
+        urlInput.value = localStorage.getItem("chromeCustomUrl") || DEFAULT_URL;
+        tabInput.value = localStorage.getItem("chromeTabCount") || DEFAULT_TABS;
+
+        let currentTheme = localStorage.getItem("chromeTheme") || "dark";
+        document.documentElement.setAttribute("data-theme", currentTheme);
+        updateThemeText();
+
+        urlInput.addEventListener("input", (e) => {
+          localStorage.setItem("chromeCustomUrl", e.target.value);
+        });
+
+        urlInput.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") urlInput.blur();
+        });
+
+        tabInput.addEventListener("input", (e) => {
+          localStorage.setItem("chromeTabCount", e.target.value);
+        });
+
+        tabInput.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") tabInput.blur();
+        });
+
+        menuBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          dropdownMenu.classList.toggle("show");
+        });
+
+        document.addEventListener("click", (e) => {
+          if (!dropdownMenu.contains(e.target) && e.target !== menuBtn) {
+            dropdownMenu.classList.remove("show");
+          }
+        });
+
+        themeToggleBtn.addEventListener("click", () => {
+          currentTheme = currentTheme === "dark" ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", currentTheme);
+          localStorage.setItem("chromeTheme", currentTheme);
+          updateThemeText();
+          dropdownMenu.classList.remove("show");
+        });
+
+        function updateThemeText() {
+          themeToggleBtn.textContent =
+            currentTheme === "dark"
+              ? "Switch to Light Mode"
+              : "Switch to Dark Mode";
+        }
+
+        revertBtn.addEventListener("click", () => {
+          urlInput.value = DEFAULT_URL;
+          localStorage.setItem("chromeCustomUrl", DEFAULT_URL);
+
+          tabInput.value = DEFAULT_TABS;
+          localStorage.setItem("chromeTabCount", DEFAULT_TABS);
+
+          dropdownMenu.classList.remove("show");
+        });
+      })();
+    </script>
+
     <!-- === GSAP Scripts & Animation Logic for Ultra Smooth Scrolling === -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -687,27 +1018,17 @@
             // Get the user's scroll speed (pixels per second)
             const scrollSpeed = Math.abs(self.getVelocity());
 
-            // --- THRESHOLD FOR "FAST" vs "SLOW" SCROLL ---
-            // Increase this number if you want the user to scroll even faster to trigger the hide effect.
-            // Decrease this number if you want it to trigger easier.
-            // 150 is the "perfect little bit fast" spot.
             const speedThreshold = 150;
 
-            // If the user scrolls all the way to the top, always show the menu
             if (self.scroll() <= 30) {
               actionNav.reverse();
-            }
-            // If the user is scrolling faster than the threshold ("not small small")
-            else if (scrollSpeed > speedThreshold) {
+            } else if (scrollSpeed > speedThreshold) {
               if (self.direction === 1) {
-                // Scrolling down faster -> Hide
                 actionNav.play();
               } else if (self.direction === -1) {
-                // Scrolling up faster -> Show
                 actionNav.reverse();
               }
             }
-            // If they are scrolling slow (speed < 150), we do nothing and keep it exactly as it is!
           },
         });
       });
