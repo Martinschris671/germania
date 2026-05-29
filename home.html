@@ -1,6 +1,48 @@
 <!doctype html>
 <html lang="hr">
   <head>
+    <!-- === FIREBASE AUTH GUARD (VERY SECURE) === -->
+    <style id="auth-guard-style">
+      body {
+        display: none !important;
+      }
+    </style>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCkEZY4Rt1ggNJr8yLGdeJheh85HqLdp8k",
+        authDomain: "germania-89650.firebaseapp.com",
+        projectId: "germania-89650",
+        storageBucket: "germania-89650.firebasestorage.app",
+        messagingSenderId: "56738516298",
+        appId: "1:56738516298:web:2d0f02027d31457a2305b3",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      // Listen for authentication state changes securely via Firebase server tokens
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          // Not logged in -> Immediate redirect without keeping history
+          window.location.replace("index.html");
+        } else {
+          // Logged in securely -> Unhide the page
+          const guardStyle = document.getElementById("auth-guard-style");
+          if (guardStyle) {
+            guardStyle.remove();
+          }
+        }
+      });
+    </script>
+    <!-- === END FIREBASE AUTH GUARD === -->
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>germaniasport</title>

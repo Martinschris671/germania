@@ -6,7 +6,6 @@
     <title>Sustav Prijava - Germania</title>
 
     <style>
-      /* Using the exact styles from your app */
       :root {
         --bg-yellow: #fee000;
         --text-brown: #5c5300;
@@ -28,7 +27,6 @@
         height: 100vh;
       }
 
-      /* The secure login box */
       .login-box {
         background-color: white;
         width: 100%;
@@ -40,7 +38,6 @@
         border-top: 6px solid var(--accent-red);
       }
 
-      /* The Germania Logo */
       .login-box img {
         height: 35px;
         margin-bottom: 25px;
@@ -53,11 +50,18 @@
         text-transform: uppercase;
       }
 
-      /* The single Access Key input */
-      .login-box input {
+      /* PASSWORD INPUT WRAPPER */
+      .input-wrapper {
+        position: relative;
+        width: 100%;
+        margin-bottom: 15px;
+      }
+
+      .login-box input[type="password"],
+      .login-box input[type="text"] {
         width: 100%;
         padding: 14px;
-        margin-bottom: 20px;
+        padding-right: 45px; /* Prostor za oko */
         border: 2px solid #e0e0e0;
         border-radius: 8px;
         font-size: 16px;
@@ -71,7 +75,42 @@
         border-color: var(--accent-red);
       }
 
-      /* The Login Button */
+      /* EYE ICON */
+      .eye-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        color: #777;
+        transition: color 0.2s;
+      }
+
+      .eye-icon:hover {
+        color: var(--accent-red);
+      }
+
+      /* REMEMBER ME TOGGLE */
+      .remember-me {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 20px;
+        font-size: 14px;
+        color: var(--text-brown);
+        cursor: pointer;
+      }
+
+      .remember-me input {
+        margin-right: 8px;
+        cursor: pointer;
+        width: 16px;
+        height: 16px;
+        accent-color: var(--accent-red);
+      }
+
       .login-box button {
         width: 100%;
         background-color: var(--btn-green);
@@ -90,38 +129,99 @@
         opacity: 0.9;
       }
 
-      /* Error/Success Message */
       #message {
         margin-top: 15px;
         font-size: 14px;
         font-weight: bold;
         min-height: 20px;
       }
+
+      /* SPINNER CSS */
+      #spinnerBox {
+        display: none; /* Skriveno po defaultu */
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+        margin-bottom: 20px;
+      }
+
+      .spinner {
+        width: 30px;
+        height: 30px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid var(--accent-red);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 15px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      #spinnerBox p {
+        color: var(--text-brown);
+        font-size: 14px;
+        font-weight: bold;
+        margin: 0;
+      }
     </style>
   </head>
   <body>
     <div class="login-box">
-      <!-- Exact logo from your code -->
       <img
         src="https://cdn.germaniasport.hr/public/img2023/mobile_logo.svg"
         alt="Germania Logo"
       />
-
       <h2>Sigurnosna Prijava</h2>
 
-      <!-- ONE BOX -->
-      <input
-        type="password"
-        id="accessKey"
-        placeholder="Unesite pristupni ključ..."
-      />
+      <!-- LOCAL STORAGE AUTOLOGIN SPINNER -->
+      <div id="spinnerBox">
+        <div class="spinner"></div>
+        <p>Provjera prethodne prijave...</p>
+      </div>
 
-      <button id="enterBtn">Prijava</button>
+      <!-- MAIN LOGIN FORM -->
+      <div id="loginForm">
+        <div class="input-wrapper">
+          <input
+            type="password"
+            id="accessKey"
+            placeholder="Unesite pristupni ključ..."
+          />
+          <!-- EYE ICON (SVG) -->
+          <svg
+            id="eyeIcon"
+            class="eye-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </div>
+
+        <label class="remember-me">
+          <input type="checkbox" id="rememberMe" />
+          Zapamti moju prijavu
+        </label>
+
+        <button id="enterBtn">Prijava</button>
+      </div>
 
       <p id="message"></p>
     </div>
 
-    <!-- Connects to the secure Firebase logic -->
     <script type="module" src="app.js"></script>
   </body>
 </html>
