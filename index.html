@@ -3,714 +3,125 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>germaniasport</title>
-    <!-- Vue 3 CDN for Reactive Functionality -->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Sustav Prijava - Germania</title>
 
-    <!-- === HEADER ASSETS & STYLES (Scoped so it doesn't break the app) === -->
-    <link rel="stylesheet" href="icons.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
     <style>
+      /* Using the exact styles from your app */
       :root {
-        --base-common-text-color-rgb: 0, 0, 0;
         --bg-yellow: #fee000;
         --text-brown: #5c5300;
         --accent-red: #df1f26;
         --btn-green: #008237;
-        --border-color: rgba(92, 83, 0, 0.15);
-        --text-color: 1, 1, 1;
+        --page-bg: #f0f0f0;
       }
 
-      /* Scoped reset specifically for the header to avoid changing your main app */
-      .site-header,
-      .site-header * {
+      body {
         margin: 0;
         padding: 0;
-        box-sizing: border-box;
+        background-color: var(--page-bg);
         font-family:
           -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
           Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
       }
 
-      /* --- HEADER CONTAINER --- */
-      .site-header {
+      /* The secure login box */
+      .login-box {
+        background-color: white;
         width: 100%;
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        /* Allow clicks to pass through the empty space when nav slides up */
-        pointer-events: none;
+        max-width: 340px;
+        padding: 40px 30px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        border-top: 6px solid var(--accent-red);
       }
 
-      /* --- TOP ROW --- */
-      .top-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 42px;
-        padding: 0 4px 0 4px;
-        /* NEW FOR SCROLL EFFECT: Solid bg, stay above bottom-nav, re-enable clicks */
-        background-color: var(--bg-yellow);
-        position: relative;
-        z-index: 20;
-        pointer-events: auto;
+      /* The Germania Logo */
+      .login-box img {
+        height: 35px;
+        margin-bottom: 25px;
       }
 
-      @media screen and (max-width: 1179px) {
-        .top-row {
-          padding: 0 4px 0 4px;
-          gap: 8px;
-        }
-      }
-
-      /* Left: Menu & Help */
-      .header-left {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        flex: 1;
-      }
-
-      .hamburger {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        width: 40px;
-        cursor: pointer;
-        margin-right: 8px;
-        gap: 2px;
-      }
-
-      .hamburger span {
-        display: block;
-        width: 15px;
-        height: 2px;
-        background-color: #df1f26;
-        border-radius: 2px;
-      }
-
-      .help-link {
-        color: var(--accent-red);
-        text-decoration: none;
-        font-size: 13px;
-      }
-
-      /* Center: Logo */
-      .header-center {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-      }
-
-      .logo-wrapper {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        border-bottom: 2px solid var(--accent-red);
-        padding: 0 10px;
-      }
-
-      .logo-wrapper img {
-        height: 28px;
-        width: auto;
-      }
-
-      /* Right: LOGGED IN STATE */
-      .header-right {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 12px;
-        flex: 1;
-      }
-
-      .balance {
+      .login-box h2 {
         color: var(--text-brown);
-        font-size: 14px;
-        font-weight: 700;
-        /* Added cursor style for editability */
-        cursor: text;
-        padding: 2px 4px;
-        border-radius: 4px;
-        transition: background-color 0.2s;
-      }
-      .balance:hover {
-        background-color: rgba(0, 0, 0, 0.05);
-      }
-      .balance:focus {
-        outline: 1px solid rgba(0, 0, 0, 0.2);
-        background-color: rgba(255, 255, 255, 0.5);
+        font-size: 18px;
+        margin-bottom: 20px;
+        text-transform: uppercase;
       }
 
-      .deposit-btn {
+      /* The single Access Key input */
+      .login-box input {
+        width: 100%;
+        padding: 14px;
+        margin-bottom: 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 16px;
+        box-sizing: border-box;
+        outline: none;
+        transition: border-color 0.3s;
+        text-align: center;
+      }
+
+      .login-box input:focus {
+        border-color: var(--accent-red);
+      }
+
+      /* The Login Button */
+      .login-box button {
+        width: 100%;
         background-color: var(--btn-green);
         color: white;
         border: none;
-        padding: 6px 12px;
-        border-radius: 15px;
-        font-size: 13px;
-        font-weight: 600;
+        padding: 15px;
+        font-size: 16px;
+        font-weight: 700;
+        border-radius: 8px;
         cursor: pointer;
-      }
-
-      .profile-icon {
-        color: var(--text-brown);
-        font-size: 20px;
-        cursor: pointer;
-      }
-
-      /* --- BOTTOM ROW (Navigation) --- */
-      .bottom-nav {
-        height: 68px;
-        width: 100%;
-        overflow-x: auto;
-        scrollbar-width: none; /* Firefox */
-
-        /* NEW FOR SCROLL EFFECT: Solid bg, slide behind top-row, re-enable clicks */
-        background-color: var(--bg-yellow);
-        position: relative;
-        z-index: 10;
-        pointer-events: auto;
-      }
-
-      @media screen and (max-width: 1179px) {
-        .bottom-nav {
-          padding: 0;
-          -webkit-transform: translateY(var(--move-y-up));
-          -moz-transform: translateY(var(--move-y-up));
-          -ms-transform: translateY(var(--move-y-up));
-          transform: translateY(var(--move-y-up));
-          box-shadow:
-            inset 0 5px 5px -5px rgba(0, 0, 0, 0.4),
-            inset 0 -5px 5px -5px rgba(0, 0, 0, 0.4);
-        }
-      }
-
-      .bottom-nav::-webkit-scrollbar {
-        display: none; /* Chrome/Safari */
-      }
-
-      .nav-list {
-        display: flex;
-        list-style: none;
-        padding: 0 12px;
-        min-width: max-content;
-        gap: 10px;
-      }
-
-      .nav-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 10px 0px 0px 0px;
-        text-decoration: none;
-        color: var(--text-brown);
-        cursor: pointer;
-        position: relative;
-        min-width: 54px;
-      }
-      .nav-item .svg {
-        display: inline-block;
-        width: 26px;
-        height: 26px;
-      }
-      .profile-icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 24px;
-        height: 24px;
-        margin-left: 10px;
-      }
-      .nav-item span {
-        height: 32px;
-        font-size: 11px;
-        line-height: 11px;
-        white-space: normal;
         text-transform: uppercase;
-        text-align: center;
-        color: var(--text-color);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        transition: opacity 0.2s;
       }
 
-      /* Notification Dot for Germania Potraga */
-      .notification-dot {
-        position: absolute;
-        top: 5px;
-        right: 22px;
-        width: 10px;
-        height: 10px;
-        background-color: var(--accent-red);
-        border-radius: 50%;
-        border: 1px solid var(--bg-yellow);
+      .login-box button:hover {
+        opacity: 0.9;
       }
 
-      /* Responsive Adjustments */
-      @media (max-width: 380px) {
-        .balance {
-          display: none;
-        }
-        .top-row {
-          padding: 0 8px;
-        }
-        .header-left,
-        .header-right {
-          gap: 8px;
-        }
+      /* Error/Success Message */
+      #message {
+        margin-top: 15px;
+        font-size: 14px;
+        font-weight: bold;
+        min-height: 20px;
       }
     </style>
   </head>
   <body>
-    <!-- IMPORTANT: <div id="app"> now WRAPS the header as well so Vue can edit the balance! -->
-    <div id="app">
-      <!-- === INSERTED HEADER === -->
-      <header class="site-header">
-        <!-- TOP ROW -->
-        <div class="top-row">
-          <div class="header-left">
-            <div class="hamburger">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <a href="#" class="help-link">
-              <i class="svg svg__help"></i> Pomoć?
-            </a>
-          </div>
+    <div class="login-box">
+      <!-- Exact logo from your code -->
+      <img
+        src="https://cdn.germaniasport.hr/public/img2023/mobile_logo.svg"
+        alt="Germania Logo"
+      />
 
-          <div class="header-center">
-            <div class="logo-wrapper">
-              <img
-                src="https://cdn.germaniasport.hr/public/img2023/mobile_logo.svg"
-                alt="Germania Logo"
-              />
-            </div>
-          </div>
+      <h2>Sigurnosna Prijava</h2>
 
-          <!-- LOGGED IN UI -->
-          <div class="header-right">
-            <!-- === EDITABLE BALANCE WITH VUE === -->
-            <span
-              class="balance"
-              contenteditable="true"
-              @blur="updateBalance($event)"
-              @keydown.enter.prevent="$event.target.blur()"
-              >{{ formatCurrency(headerBalance) }}</span
-            >
+      <!-- ONE BOX -->
+      <input
+        type="password"
+        id="accessKey"
+        placeholder="Unesite pristupni ključ..."
+      />
 
-            <button class="deposit-btn">Uplata</button>
-            <i class="svg svg__user-outlined profile-icon"></i>
-          </div>
-        </div>
+      <button id="enterBtn">Prijava</button>
 
-        <!-- BOTTOM ROW -->
-        <nav class="bottom-nav">
-          <ul class="nav-list">
-            <a href="#" class="nav-item">
-              <span class="svg full-size svg__betting-nav"></span>
-              <span>KLAĐENJE</span>
-            </a>
-
-            <a href="#" class="nav-item">
-              <span class="svg full-size svg__live-nav"></span>
-              <span>UŽIVO</span>
-            </a>
-
-            <a href="#" class="nav-item">
-              <span class="svg full-size svg__casino-nav"></span>
-              <span>Casino</span>
-            </a>
-
-            <a href="#" class="nav-item">
-              <span class="svg full-size svg__live-casino-nav"></span>
-              <span>CASINO<br />UŽIVO</span>
-            </a>
-
-            <a href="#" class="nav-item">
-              <span class="svg full-size svg__quest-nav"></span>
-              <span>GERMANIA<br />POTRAGA</span>
-              <div class="notification-dot"></div>
-            </a>
-
-            <a href="#" class="nav-item">
-              <span class="svg full-size svg__aviator-ico-nav"></span>
-              <span>Aviator</span>
-            </a>
-
-            <a href="#" class="nav-item">
-              <span class="svg full-size svg__lotto-nav"></span>
-              <span>Loto</span>
-            </a>
-
-            <a href="#" class="nav-item">
-              <span class="svg full-size svg__lucky-g-nav"></span>
-              <span>Lucky</span>
-            </a>
-
-            <a href="#" class="nav-item">
-              <span class="svg full-size svg__kontra-nav"></span>
-              <span>Kontra</span>
-            </a>
-
-            <a href="#" class="nav-item">
-              <span class="svg full-size svg__virtuals-nav"></span>
-              <span>Virtuali</span>
-            </a>
-
-            <a href="#" class="nav-item">
-              <span class="svg full-size svg__brzze-nav"></span>
-              <span>Brze igre</span>
-            </a>
-
-            <a href="#" class="nav-item">
-              <span class="svg full-size svg__promo-ico-nav"></span>
-              <span>Promocije</span>
-            </a>
-          </ul>
-        </nav>
-      </header>
-
-      <!-- === EXISTING APP CONTENT === -->
-      <div class="ticket-wrapper">
-        <!-- Matches List -->
-        <div class="match-list">
-          <div
-            class="match-item"
-            v-for="(match, index) in matches"
-            :key="match.id"
-          >
-            <div class="match-top">
-              <span
-                contenteditable="true"
-                @blur="match.time = $event.target.innerText"
-              >
-                {{ match.time }}
-              </span>
-              <span class="ball-emoji">⚽</span>
-            </div>
-
-            <div
-              class="match-teams"
-              contenteditable="true"
-              @blur="match.teams = $event.target.innerText"
-            >
-              {{ match.teams }}
-            </div>
-
-            <div class="match-bottom">
-              <div
-                contenteditable="true"
-                @blur="match.betType = $event.target.innerText"
-              >
-                {{ match.betType }}
-              </div>
-              <div
-                contenteditable="true"
-                @blur="match.category = $event.target.innerText"
-              >
-                {{ match.category }}
-              </div>
-            </div>
-
-            <div class="match-right">
-              <div class="match-icons">
-                <svg
-                  class="icon-copy"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                  <path
-                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
-                  ></path>
-                </svg>
-
-                <!-- Editable Status Icon (Click to toggle) -->
-                <div
-                  class="status-toggle"
-                  :class="'status-' + match.status"
-                  @click="toggleStatus(match)"
-                >
-                  <span v-if="match.status === 0">?</span>
-                  <span v-if="match.status === 1">✓</span>
-                  <span v-if="match.status === 2">✗</span>
-                </div>
-              </div>
-              <!-- Editable Odds -->
-              <div
-                class="match-odds"
-                contenteditable="true"
-                @blur="updateOdds(match, $event)"
-                @keydown.enter.prevent="$event.target.blur()"
-              >
-                {{ match.odds.toFixed(2) }}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bottom Section -->
-        <div class="bottom-section">
-          <div class="totals-area">
-            <div class="total-row">
-              <span>Tečaj:</span>
-              <span class="total-val">{{ tecajFormatted }}</span>
-            </div>
-            <div class="total-row">
-              <span>Uplata:</span>
-              <span
-                class="total-val"
-                contenteditable="true"
-                @blur="updateVal('uplata', $event)"
-                @keydown.enter.prevent="$event.target.blur()"
-              >
-                {{ formatCurrency(uplata) }}
-              </span>
-            </div>
-            <div class="total-row">
-              <span>MT:</span>
-              <span>
-                <span
-                  class="total-val"
-                  contenteditable="true"
-                  @blur="updateVal('manualMt', $event)"
-                  @keydown.enter.prevent="$event.target.blur()"
-                >
-                  {{ formatCurrency(mtValue) }}
-                </span>
-                (5%)
-              </span>
-            </div>
-            <div class="total-row">
-              <span>Ulog:</span>
-              <span class="val-green">{{ formatCurrency(ulogValue) }}</span>
-            </div>
-            <div class="total-row">
-              <span>Dobitak:</span>
-              <span class="total-val">{{ formatCurrency(dobitakValue) }}</span>
-            </div>
-            <!-- Porez row with specific bottom border -->
-            <div class="total-row porez-row">
-              <span>Porez:</span>
-              <span
-                class="total-val"
-                contenteditable="true"
-                @blur="updateVal('manualTax', $event)"
-                @keydown.enter.prevent="$event.target.blur()"
-              >
-                {{ formatCurrency(taxValue) }}
-              </span>
-            </div>
-            <div class="total-row">
-              <span>Isplata:</span>
-              <span class="val-isplata"
-                >{{ formatCurrency(isplataValue) }}</span
-              >
-            </div>
-          </div>
-
-          <!-- Footer Links -->
-          <div class="ticket-footer">
-            <!-- Real Dropdown -->
-            <div class="info-dropdown">
-              <div class="info-link" @click="infoOpen = !infoOpen">
-                <span>Informacije o listiću</span>
-                <span
-                  style="
-                    width: 20px;
-                    height: 20px;
-                    transition: transform 0.3s ease;
-                    display: inline-block;
-                  "
-                  :style="infoOpen ? 'transform: rotate(180deg)' : ''"
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                    <g
-                      id="SVGRepo_tracerCarrier"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></g>
-                    <g id="SVGRepo_iconCarrier">
-                      <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M4.29289 8.29289C4.68342 7.90237 5.31658 7.90237 5.70711 8.29289L12 14.5858L18.2929 8.29289C18.6834 7.90237 19.3166 7.90237 19.7071 8.29289C20.0976 8.68342 20.0976 9.31658 19.7071 9.70711L12.7071 16.7071C12.3166 17.0976 11.6834 17.0976 11.2929 16.7071L4.29289 9.70711C3.90237 9.31658 3.90237 8.68342 4.29289 8.29289Z"
-                        fill="currentColor"
-                      ></path>
-                    </g>
-                  </svg>
-                </span>
-              </div>
-              <div class="info-content" v-show="infoOpen">
-                Status: <span style="color: var(--accent-green)">Dobitan</span
-                ><br />
-                Vrijeme uplate: danas 12:00<br />
-                Broj listića: 1234567890
-              </div>
-            </div>
-
-            <div class="action-buttons">
-              <!-- This button now opens the secret modal! -->
-              <div class="action-btn" @click="showAdminModal = true">
-                <div class="icon-bg">
-                  <svg
-                    style="
-                      fill: none;
-                      stroke: currentColor;
-                      stroke-width: 2;
-                      stroke-linecap: round;
-                      stroke-linejoin: round;
-                    "
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M9 17v1.5c0 1.1.9 2 2 2h7c1.1 0 2-.9 2-2v-7c0-1.1-.9-2-2-2h-1.5"
-                    />
-                    <rect x="4" y="4" width="11" height="13" rx="2" ry="2" />
-                    <line x1="7" y1="9" x2="12" y2="9" />
-                    <line x1="7" y1="13" x2="12" y2="13" />
-                  </svg>
-                </div>
-                <span>Kreiraj isti<br />listić</span>
-              </div>
-              <div class="action-btn">
-                <div class="icon-bg">
-                  <svg viewBox="0 0 24 24">
-                    <path
-                      d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"
-                    />
-                  </svg>
-                </div>
-                <span>Podijeli</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECRET ADMIN MODAL -->
-      <div
-        class="modal-overlay"
-        v-if="showAdminModal"
-        @click.self="showAdminModal = false"
-      >
-        <div class="modal-content">
-          <div class="modal-title">Upravljanje Listićem</div>
-
-          <div class="modal-matches-list">
-            <div
-              class="modal-match-item"
-              v-for="(match, index) in matches"
-              :key="match.id"
-            >
-              <span>{{ index + 1 }}. {{ match.teams }}</span>
-              <span class="delete-icon" @click="removeMatch(index)">X</span>
-            </div>
-            <div
-              v-if="matches.length === 0"
-              style="text-align: center; color: #999; font-size: 12px"
-            >
-              Nema parova na listiću
-            </div>
-          </div>
-
-          <button class="modal-btn btn-add" @click="addMatch">
-            + Dodaj novi par
-          </button>
-          <button class="modal-btn btn-delete-all" @click="removeAll">
-            Obriši sve parove
-          </button>
-          <button class="modal-btn btn-reset" @click="resetToDefault">
-            Vrati na original
-          </button>
-
-          <!-- NOVI GUMB ZA SVJETLU TEMU -->
-          <button
-            class="modal-btn btn-theme"
-            @click="isLightMode = !isLightMode"
-          >
-            <span v-if="!isLightMode">☀️ Prebaci na Svijetlu temu</span>
-            <span v-else>🌙 Prebaci na Tamnu temu</span>
-          </button>
-
-          <button class="modal-btn btn-close" @click="showAdminModal = false">
-            Zatvori Izbornik
-          </button>
-        </div>
-      </div>
+      <p id="message"></p>
     </div>
-    <!-- END OF #app WRAPPER -->
 
-    <script src="script.js"></script>
-
-    <!-- === GSAP Scripts & Animation Logic for Ultra Smooth Scrolling === -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        // Register the GSAP plugin
-        gsap.registerPlugin(ScrollTrigger);
-
-        // Define the animation: Slide the bottom nav UP by its exact height (68px)
-        const actionNav = gsap.to(".bottom-nav", {
-          y: -68,
-          duration: 0.35, // Perfectly calibrated speed
-          ease: "power2.inOut",
-          paused: true,
-        });
-
-        // Monitor scrolling to fire the animation
-        ScrollTrigger.create({
-          trigger: document.body,
-          start: "top top-=30",
-          onUpdate: (self) => {
-            // Get the user's scroll speed (pixels per second)
-            const scrollSpeed = Math.abs(self.getVelocity());
-
-            // --- THRESHOLD FOR "FAST" vs "SLOW" SCROLL ---
-            // Increase this number if you want the user to scroll even faster to trigger the hide effect.
-            // Decrease this number if you want it to trigger easier.
-            // 150 is the "perfect little bit fast" spot.
-            const speedThreshold = 150;
-
-            // If the user scrolls all the way to the top, always show the menu
-            if (self.scroll() <= 30) {
-              actionNav.reverse();
-            }
-            // If the user is scrolling faster than the threshold ("not small small")
-            else if (scrollSpeed > speedThreshold) {
-              if (self.direction === 1) {
-                // Scrolling down faster -> Hide
-                actionNav.play();
-              } else if (self.direction === -1) {
-                // Scrolling up faster -> Show
-                actionNav.reverse();
-              }
-            }
-            // If they are scrolling slow (speed < 150), we do nothing and keep it exactly as it is!
-          },
-        });
-      });
-    </script>
+    <!-- Connects to the secure Firebase logic -->
+    <script type="module" src="app.js"></script>
   </body>
 </html>
