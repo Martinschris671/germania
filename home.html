@@ -366,23 +366,6 @@
         flex: 1;
       }
 
-      .balance {
-        color: var(--text-brown);
-        font-size: 14px;
-        font-weight: 700;
-        cursor: text;
-        padding: 2px 4px;
-        border-radius: 4px;
-        transition: background-color 0.2s;
-      }
-      .balance:hover {
-        background-color: rgba(0, 0, 0, 0.05);
-      }
-      .balance:focus {
-        outline: 1px solid rgba(0, 0, 0, 0.2);
-        background-color: rgba(255, 255, 255, 0.5);
-      }
-
       .deposit-btn {
         background-color: var(--btn-green);
         color: white;
@@ -487,9 +470,6 @@
       }
 
       @media (max-width: 380px) {
-        .balance {
-          display: none;
-        }
         .top-row {
           padding: 0 8px;
         }
@@ -599,15 +579,6 @@
 
           <!-- LOGGED IN UI -->
           <div class="header-right">
-            <!-- === EDITABLE BALANCE WITH VUE === -->
-            <span
-              class="balance"
-              contenteditable="true"
-              @blur="updateBalance($event)"
-              @keydown.enter.prevent="$event.target.blur()"
-              >{{ formatCurrency(headerBalance) }}</span
-            >
-
             <button class="deposit-btn">Uplata</button>
             <i class="svg svg__user-outlined profile-icon"></i>
           </div>

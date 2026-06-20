@@ -29,11 +29,6 @@ createApp({
     const initialLightMode =
       savedTheme !== null ? JSON.parse(savedTheme) : false;
 
-    // === NEW: Check Local Storage for Custom Balance ===
-    const savedBalance = localStorage.getItem("headerBalance");
-    const initialBalance =
-      savedBalance !== null ? parseFloat(savedBalance) : 145.5;
-
     return {
       matches: JSON.parse(JSON.stringify(defaultMatches)),
       uplata: 2000.0,
@@ -42,7 +37,6 @@ createApp({
       infoOpen: false,
       showAdminModal: false,
       isLightMode: initialLightMode,
-      headerBalance: initialBalance, // Store the custom balance
     };
   },
   watch: {
@@ -88,26 +82,6 @@ createApp({
     },
   },
   methods: {
-    // === NEW: Update & Save Balance Method ===
-    updateBalance(event) {
-      // Clean up the text input (removes the euro symbol, spaces, and turns commas into decimals)
-      let val = parseFloat(
-        event.target.innerText
-          .replace(/€/g, "")
-          .replace(",", ".")
-          .replace(/ /g, ""),
-      );
-
-      // If it's a valid number, save it!
-      if (!isNaN(val)) {
-        this.headerBalance = val;
-        localStorage.setItem("headerBalance", val);
-      }
-
-      // Reformat the text element so it always looks clean (e.g. 145,50 €)
-      event.target.innerText = this.formatCurrency(this.headerBalance);
-    },
-
     toggleStatus(match) {
       match.status = (match.status + 1) % 3;
     },
@@ -133,7 +107,6 @@ createApp({
       this.uplata = 2000.0;
       this.manualMt = null;
       this.manualTax = null;
-      // Note: We deliberately do NOT reset the custom balance here so it stays persistent
     },
     updateOdds(match, event) {
       let val = parseFloat(
